@@ -4,7 +4,7 @@
 
 ### 安装 eve
 
-`tnpm install -g eve`
+`npm install -g eve`
 
 ### 模板管理
 
