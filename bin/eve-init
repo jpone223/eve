@@ -1,0 +1,61 @@
+#!/usr/bin/env node
+
+/**
+ * init
+ * 读取 config.json 种的模板列表
+ * 开发者选择模板之后，下载该模板
+ * 存放到 .eve/templates 目录下
+ * 进入创建项目的流程
+ * 复制 .eve/templates/xx 文件
+ * 根据开发者输入的 
+ * `project` `username` `author` `email`
+ * 生成新的 package.json
+ * 新项目存放到用户执行命令的目录下
+ */
+
+ const path = require('path')
+ const program = require('commander')
+ const inquirer = require('inquirer')
+ const fse = require('fs-extra')
+ const quiz = require('../lib/quiz')
+ 
+ let HOME = process.env.HOME || 
+    process.env.HOMEPATH || 
+    process.env.USERPROFILE
+ let EVE_HOME = path.join(HOME, '.eve')
+ let EVE_CONFIG_FILE = path.join(EVE_HOME, 'config.json')
+ let EVE_TEMPLATES_DIR = path.join(EVE_HOME, 'templates')
+
+ // 确保 .eve 目录 .eve/config.json .eve/templates 存在
+ // ensureFile 方法可以校验顺便 .eve 目录的存在，不存在的话创建之
+ fse.ensureFile(EVE_CONFIG_FILE)
+    .then(() => {
+        return fse.readJsonAsync(ADAM_CONFIG_FILE);
+    })
+    .catch(() => {
+        // 新创建的 config.json 文件无内容，则会进入到此 catch 分支
+        var conf = {
+            templates: [],
+            last: {},
+            config: {}
+        };
+        
+        return fse.writeJsonSync(EVE_CONFIG_FILE, conf, {spaces: 4})
+    })
+    .then((conf) => {
+        fse.readJson(EVE_CONFIG_FILE)
+            .then(obj => {
+                // 如果用户之前没有添加任何模版
+                // 提示用户添加一个
+                if(obj.templates.length) {
+                    inquirer.prompt(quiz.init[0])
+                }
+                else {
+                    console.log('请先添加一个模版')
+                }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    })
+

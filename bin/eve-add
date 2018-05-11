@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+
+/**
+ * add 模板
+ * 将仓库地址和模板名称存储到 .eve/config.json
+ * 包括
+ * {
+ *      "templates": [
+ *          {
+ *              "name": "tpl-weex",
+ *              "url": "# 仓库地址 #"
+ *          }
+ *      ],
+ *      // 存储上次选择选择的模板
+ *      // init 时列表默认选中该模板
+ *      "last": “tpl-weex”
+ * }
+ */
